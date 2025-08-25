@@ -278,7 +278,6 @@ impl ChatComposer {
                 // Do not insert into textarea yet. A tick will flush if no burst follows.
                 Some((InputResult::None, true))
             }
-            CharDecision::Passthrough => None,
         }
     }
 
