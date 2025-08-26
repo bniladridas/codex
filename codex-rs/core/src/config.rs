@@ -178,6 +178,11 @@ pub struct Config {
     pub preferred_auth_method: AuthMode,
 
     pub use_experimental_streamable_shell_tool: bool,
+
+    /// When true, disables burst-paste detection for typed input entirely.
+    /// All characters are inserted as they are received, and no buffering
+    /// or placeholder replacement will occur for fast keypress bursts.
+    pub disable_paste_burst: bool,
 }
 
 impl Config {
@@ -485,6 +490,11 @@ pub struct ConfigToml {
 
     /// Nested tools section for feature toggles
     pub tools: Option<ToolsToml>,
+
+    /// When true, disables burst-paste detection for typed input entirely.
+    /// All characters are inserted as they are received, and no buffering
+    /// or placeholder replacement will occur for fast keypress bursts.
+    pub disable_paste_burst: Option<bool>,
 }
 
 #[derive(Deserialize, Debug, Clone, PartialEq, Eq)]
@@ -784,6 +794,7 @@ impl Config {
             use_experimental_streamable_shell_tool: cfg
                 .experimental_use_exec_command_tool
                 .unwrap_or(false),
+            disable_paste_burst: cfg.disable_paste_burst.unwrap_or(false),
         };
         Ok(config)
     }
@@ -1152,6 +1163,7 @@ disable_response_storage = true
                 responses_originator_header: "codex_cli_rs".to_string(),
                 preferred_auth_method: AuthMode::ChatGPT,
                 use_experimental_streamable_shell_tool: false,
+                disable_paste_burst: false,
             },
             o3_profile_config
         );
@@ -1208,6 +1220,7 @@ disable_response_storage = true
             responses_originator_header: "codex_cli_rs".to_string(),
             preferred_auth_method: AuthMode::ChatGPT,
             use_experimental_streamable_shell_tool: false,
+            disable_paste_burst: false,
         };
 
         assert_eq!(expected_gpt3_profile_config, gpt3_profile_config);
@@ -1279,6 +1292,7 @@ disable_response_storage = true
             responses_originator_header: "codex_cli_rs".to_string(),
             preferred_auth_method: AuthMode::ChatGPT,
             use_experimental_streamable_shell_tool: false,
+            disable_paste_burst: false,
         };
 
         assert_eq!(expected_zdr_profile_config, zdr_profile_config);
